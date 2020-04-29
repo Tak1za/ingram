@@ -9,12 +9,14 @@ public class User {
     private String firstName;
     private String lastName;
     private String email;
+    private String bio;
     private Timestamp createdAt;
     private Timestamp updatedAt;
     private List<DocumentReference> followers;
     private List<DocumentReference> following;
+    private List<DocumentReference> pokes;
 
-    public User(String firstName, String lastName, String email, Timestamp createdAt, Timestamp updatedAt, List<DocumentReference> followers, List<DocumentReference> following) {
+    public User(String firstName, String lastName, String email, Timestamp createdAt, Timestamp updatedAt, List<DocumentReference> followers, List<DocumentReference> following, List<DocumentReference> pokes) {
         this.firstName = firstName;
         this.lastName = lastName;
         this.email = email;
@@ -22,6 +24,11 @@ public class User {
         this.updatedAt = updatedAt;
         this.followers = followers;
         this.following = following;
+        this.pokes = pokes;
+    }
+
+    public User(){
+
     }
 
     public String getFirstName() {
@@ -78,5 +85,21 @@ public class User {
 
     public void setFollowing(List<DocumentReference> following) {
         this.following = following;
+    }
+
+    public List<DocumentReference> getPokes() {
+        return pokes;
+    }
+
+    public void setPokes(List<DocumentReference> pokes) {
+        this.pokes = pokes;
+    }
+
+    public String getBio() {
+        return bio;
+    }
+
+    public void setBio(String bio) {
+        this.bio = bio;
     }
 }

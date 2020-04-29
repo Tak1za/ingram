@@ -88,7 +88,7 @@ public class SignupActivity extends AppCompatActivity {
 
     public void addUserToDb(String firstName, String lastName, FirebaseUser currentUser) {
         List<DocumentReference> emptyList = new ArrayList<>();
-        User user = new User(firstName, lastName, currentUser.getEmail(), new Timestamp(new Date()), new Timestamp(new Date()), emptyList, emptyList);
+        User user = new User(firstName, lastName, currentUser.getEmail(), new Timestamp(new Date()), new Timestamp(new Date()), emptyList, emptyList, emptyList);
 
         firestoreDb
                 .collection("users")
