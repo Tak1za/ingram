@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "199797703621",
+    "firebase_url": "https://ingram-a88ad.firebaseio.com",
+    "project_id": "ingram-a88ad",
+    "storage_bucket": "ingram-a88ad.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:199797703621:android:05690a454ab502a0ea41ac",
+        "android_client_info": {
+          "package_name": "com.Tak1za.ingram"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "199797703621-dhk6kbevcnsropm650ds7k5i0bpscvia.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDosy0z8V-Vxkue_PtXp1pcio174SbCH9M"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "199797703621-dhk6kbevcnsropm650ds7k5i0bpscvia.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
