@@ -1,10 +1,12 @@
 package com.Tak1za.ingram.models;
 
+import com.fasterxml.jackson.annotation.JsonInclude;
 import com.google.firebase.Timestamp;
 import com.google.firebase.firestore.DocumentReference;
 
 import java.util.List;
 
+@JsonInclude(JsonInclude.Include.NON_NULL)
 public class Post {
     private String caption;
     private String imageName;

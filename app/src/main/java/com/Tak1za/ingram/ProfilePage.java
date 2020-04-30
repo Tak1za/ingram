@@ -8,6 +8,8 @@ import androidx.core.content.ContextCompat;
 
 import android.annotation.SuppressLint;
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
@@ -15,6 +17,7 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.WindowManager;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.Tak1za.ingram.entity.UserProfile;
@@ -22,6 +25,7 @@ import com.Tak1za.ingram.models.Post;
 import com.Tak1za.ingram.models.User;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.CollectionReference;
@@ -32,6 +36,8 @@ import com.google.firebase.firestore.FirebaseFirestoreException;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 import com.google.firebase.firestore.Transaction;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -41,12 +47,14 @@ public class ProfilePage extends AppCompatActivity {
 
     FirebaseAuth mAuth;
     FirebaseFirestore firestoreDb;
+    FirebaseStorage firebaseStorage;
     TextView postsCountTextView;
     TextView pokesCountTextView;
     TextView followersCountTextView;
     TextView sugarcubesCountTextView;
     TextView followingCountTextView;
     TextView bioTextView;
+    ImageView profileImageView;
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -64,6 +72,11 @@ public class ProfilePage extends AppCompatActivity {
             case R.id.addPost:
                 Intent intent = new Intent(this, AddPostActivity.class);
                 startActivity(intent);
+                return true;
+            case R.id.editProfile:
+                Intent intentEditProfile = new Intent(this, EditProfileActivity.class);
+                startActivity(intentEditProfile);
+                return true;
             default:
                 return false;
         }
@@ -77,12 +90,14 @@ public class ProfilePage extends AppCompatActivity {
 
         mAuth = FirebaseAuth.getInstance();
         firestoreDb = FirebaseFirestore.getInstance();
+        firebaseStorage = FirebaseStorage.getInstance();
         postsCountTextView = findViewById(R.id.postsCountTextView);
         pokesCountTextView = findViewById(R.id.pokesCountTextView);
         followersCountTextView = findViewById(R.id.followersCountTextView);
         followingCountTextView = findViewById(R.id.followingCountTextView);
         sugarcubesCountTextView = findViewById(R.id.sugarcubesCountTextView);
         bioTextView = findViewById(R.id.bioTextView);
+        profileImageView = findViewById(R.id.profileImageView);
 
         ActionBar actionBar = getSupportActionBar();
         actionBar.setTitle(mAuth.getCurrentUser().getDisplayName());
@@ -138,12 +153,24 @@ public class ProfilePage extends AppCompatActivity {
                                     userPosts.add(userPost);
                                 }
                             }
+
+                            StorageReference profileImageRef = firebaseStorage.getReference().child(mAuth.getCurrentUser().getUid()).child("images").child(user.getProfileImageName());
+                            final long ONE_MEGABYTE = 512 * 512;
+                            profileImageRef.getBytes(ONE_MEGABYTE).addOnSuccessListener(new OnSuccessListener<byte[]>() {
+                                @Override
+                                public void onSuccess(byte[] bytes) {
+                                    Bitmap bitmap = BitmapFactory.decodeByteArray(bytes, 0, bytes.length);
+                                    profileImageView.setImageBitmap(bitmap);
+                                }
+                            });
+
                             postsCountTextView.setText("Posts: " + userPosts.size());
                             pokesCountTextView.setText("Pokes: " + user.getPokes().size());
                             followersCountTextView.setText("Followers: " + user.getFollowers().size());
                             followingCountTextView.setText("Following: " + user.getFollowing().size());
                             sugarcubesCountTextView.setText("Sugar Cubes: 0");
                             bioTextView.setText(user.getBio() != null && !user.getBio().isEmpty() ? user.getBio() : "");
+
                         } else {
                             Log.d("DebugLogs", "Failed to get posts");
                             try {

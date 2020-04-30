@@ -1,15 +1,18 @@
 package com.Tak1za.ingram.models;
 
+import com.fasterxml.jackson.annotation.JsonInclude;
 import com.google.firebase.Timestamp;
 import com.google.firebase.firestore.DocumentReference;
 
 import java.util.List;
 
+@JsonInclude(JsonInclude.Include.NON_NULL)
 public class User {
     private String firstName;
     private String lastName;
     private String email;
     private String bio;
+    private String profileImageName;
     private Timestamp createdAt;
     private Timestamp updatedAt;
     private List<DocumentReference> followers;
@@ -29,6 +32,14 @@ public class User {
 
     public User(){
 
+    }
+
+    public String getProfileImageName() {
+        return profileImageName;
+    }
+
+    public void setProfileImageName(String profileImageName) {
+        this.profileImageName = profileImageName;
     }
 
     public String getFirstName() {

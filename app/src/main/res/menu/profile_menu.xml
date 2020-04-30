@@ -1,5 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
-    <item android:title="Logout" android:id="@+id/logout"></item>
-    <item android:title="Create Post" android:id="@+id/addPost"></item>
+    <item
+        android:id="@+id/addPost"
+        android:title="Create Post"></item>
+    <item
+        android:id="@+id/editProfile"
+        android:title="Edit Profile" />
+    <item
+        android:id="@+id/logout"
+        android:title="Logout"></item>
 </menu>

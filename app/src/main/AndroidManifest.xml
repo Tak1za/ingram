@@ -3,7 +3,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     package="com.Tak1za.ingram">
 
-    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE"/>
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
 
     <application
         android:allowBackup="true"
@@ -12,7 +12,8 @@
         android:roundIcon="@mipmap/ingram_logo_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".AddPostActivity"></activity>
+        <activity android:name=".EditProfileActivity"></activity>
+        <activity android:name=".AddPostActivity" />
         <activity
             android:name=".SignupActivity"
             android:screenOrientation="sensorPortrait"
