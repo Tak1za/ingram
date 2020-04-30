@@ -3,6 +3,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     package="com.Tak1za.ingram">
 
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE"/>
+
     <application
         android:allowBackup="true"
         android:icon="@mipmap/ingram_logo"
@@ -10,13 +12,20 @@
         android:roundIcon="@mipmap/ingram_logo_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".SignupActivity" android:theme="@style/Theme.AppCompat.NoActionBar" android:screenOrientation="sensorPortrait"
-            tools:ignore="LockedOrientationActivity"></activity>
-        <activity android:name=".ProfilePage" android:screenOrientation="sensorPortrait"
+        <activity android:name=".AddPostActivity"></activity>
+        <activity
+            android:name=".SignupActivity"
+            android:screenOrientation="sensorPortrait"
+            android:theme="@style/Theme.AppCompat.NoActionBar"
+            tools:ignore="LockedOrientationActivity" />
+        <activity
+            android:name=".ProfilePage"
+            android:screenOrientation="sensorPortrait"
             tools:ignore="LockedOrientationActivity" />
         <activity
             android:name=".LoginActivity"
-            android:theme="@style/Theme.AppCompat.NoActionBar" android:screenOrientation="sensorPortrait"
+            android:screenOrientation="sensorPortrait"
+            android:theme="@style/Theme.AppCompat.NoActionBar"
             tools:ignore="LockedOrientationActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

@@ -79,8 +79,6 @@ public class SignupActivity extends AppCompatActivity {
                             Log.d("DebugLogs", "Updated user profile");
                             Toast.makeText(SignupActivity.this, "Signing up...", Toast.LENGTH_SHORT).show();
                             addUserToDb(firstName, lastName, currentUser);
-                            Intent intent = new Intent(SignupActivity.this, ProfilePage.class);
-                            startActivity(intent);
                         }
                     }
                 });
@@ -98,6 +96,8 @@ public class SignupActivity extends AppCompatActivity {
                     @Override
                     public void onSuccess(Void aVoid) {
                         Log.d("DebugLogs", "Added user to the database");
+                        Intent intent = new Intent(SignupActivity.this, ProfilePage.class);
+                        startActivity(intent);
                     }
                 })
                 .addOnFailureListener(new OnFailureListener() {
