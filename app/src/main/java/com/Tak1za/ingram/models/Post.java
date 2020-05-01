@@ -1,17 +1,20 @@
 package com.Tak1za.ingram.models;
 
+import android.os.Parcelable;
+
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.google.firebase.Timestamp;
 import com.google.firebase.firestore.DocumentReference;
 
+import java.io.Serializable;
 import java.util.List;
 
 @JsonInclude(JsonInclude.Include.NON_NULL)
-public class Post {
+public class Post implements Serializable {
     private String caption;
     private String imageName;
-    private Timestamp createdAt;
-    private Timestamp updatedAt;
+    private transient Timestamp createdAt;
+    private transient Timestamp updatedAt;
     private List<DocumentReference> likes;
 
     public Post(){

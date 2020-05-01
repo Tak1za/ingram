@@ -5,6 +5,9 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.ContextCompat;
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentTransaction;
 
 import android.annotation.SuppressLint;
 import android.content.Intent;
@@ -16,6 +19,7 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
+import android.view.View;
 import android.view.WindowManager;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -49,13 +53,12 @@ public class ProfilePage extends AppCompatActivity {
     FirebaseFirestore firestoreDb;
     FirebaseStorage firebaseStorage;
     TextView postsCountTextView;
-    TextView pokesCountTextView;
+    TextView donationsCountTextView;
     TextView followersCountTextView;
-    TextView sugarcubesCountTextView;
-    TextView followingCountTextView;
     TextView bioTextView;
     ImageView profileImageView;
     ActionBar actionBar;
+    Fragment postsFragment;
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -102,10 +105,8 @@ public class ProfilePage extends AppCompatActivity {
         firestoreDb = FirebaseFirestore.getInstance();
         firebaseStorage = FirebaseStorage.getInstance();
         postsCountTextView = findViewById(R.id.postsCountTextView);
-        pokesCountTextView = findViewById(R.id.pokesCountTextView);
+        donationsCountTextView = findViewById(R.id.donationsCountTextView);
         followersCountTextView = findViewById(R.id.followersCountTextView);
-        followingCountTextView = findViewById(R.id.followingCountTextView);
-        sugarcubesCountTextView = findViewById(R.id.sugarcubesCountTextView);
         bioTextView = findViewById(R.id.bioTextView);
         profileImageView = findViewById(R.id.profileImageView);
 
@@ -180,13 +181,15 @@ public class ProfilePage extends AppCompatActivity {
                                 });
                             }
 
-                            postsCountTextView.setText("Posts: " + userPosts.size());
-                            pokesCountTextView.setText("Pokes: " + user.getPokes().size());
-                            followersCountTextView.setText("Followers: " + user.getFollowers().size());
-                            followingCountTextView.setText("Following: " + user.getFollowing().size());
-                            sugarcubesCountTextView.setText("Sugar Cubes: 0");
+                            postsCountTextView.setText(Integer.toString(userPosts.size()));
+                            donationsCountTextView.setText(Integer.toString(0));
+                            followersCountTextView.setText(Integer.toString(user.getFollowers().size()));
                             bioTextView.setText(user.getBio() != null && !user.getBio().isEmpty() ? user.getBio() : "");
 
+                            FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
+                            postsFragment = PostsFragment.newInstance(userPosts);
+                            fragmentTransaction.replace(R.id.fragmentContainer, postsFragment);
+                            fragmentTransaction.commit();
                         } else {
                             Log.d("DebugLogs", "Failed to get posts");
                             try {
@@ -199,5 +202,9 @@ public class ProfilePage extends AppCompatActivity {
                         }
                     }
                 });
+    }
+
+    public void displayUserPosts(View view){
+
     }
 }

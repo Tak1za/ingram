@@ -15,7 +15,7 @@
         android:layout_marginTop="32dp"
         android:layout_marginEnd="16dp"
         android:src="@drawable/ic_launcher_foreground"
-        app:civ_border_color="#FF000000"
+        app:civ_border_color="@color/colorPrimary"
         app:civ_border_width="2dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -30,6 +30,7 @@
         android:layout_marginEnd="16dp"
         android:textAlignment="center"
         android:textColor="@color/colorBorders"
+        android:textSize="16sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/profileImageView" />
@@ -37,91 +38,143 @@
     <LinearLayout
         android:id="@+id/linearLayout2"
         android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="16dp"
+        android:layout_height="100dp"
+        android:layout_marginStart="50dp"
         android:layout_marginTop="32dp"
-        android:layout_marginEnd="16dp"
-        android:orientation="vertical"
-        android:padding="5dp"
+        android:layout_marginEnd="50dp"
+        android:orientation="horizontal"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/bioTextView">
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal">
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:onClick="displayUserPosts"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/postsLabelTextView"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:text="Posts"
+                android:textAlignment="center"
+                android:textColor="@color/colorBorders"
+                android:textSize="14sp" />
 
             <TextView
                 android:id="@+id/postsCountTextView"
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:padding="5dp"
-                android:text="Posts: 0"
-                android:textAlignment="textStart"
-                android:textColor="@color/colorBorders"
-                android:textSize="16sp" />
-
-            <TextView
-                android:id="@+id/dividerTextView"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:padding="5dp"
-                android:textColor="@android:color/transparent"
-                android:textSize="18sp" />
-
-            <TextView
-                android:id="@+id/pokesCountTextView"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:padding="5dp"
-                android:text="Pokes: 0"
-                android:textAlignment="textEnd"
-                android:textColor="@color/colorBorders"
-                android:textSize="16sp" />
+                android:layout_marginLeft="5dp"
+                android:layout_marginTop="5dp"
+                android:layout_marginRight="5dp"
+                android:layout_weight="3"
+                android:background="@drawable/rounded_corner_editbox"
+                android:backgroundTint="@color/colorPrimaryDark"
+                android:gravity="center"
+                android:textAlignment="center"
+                android:textColor="@android:color/holo_green_dark"
+                android:textSize="24sp" />
         </LinearLayout>
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal">
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/donationsLabelTextView"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:text="Donations"
+                android:textAlignment="center"
+                android:textColor="@color/colorBorders"
+                android:textSize="14sp" />
+
+            <TextView
+                android:id="@+id/donationsCountTextView"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="5dp"
+                android:layout_marginTop="5dp"
+                android:layout_marginRight="5dp"
+                android:layout_weight="3"
+                android:background="@drawable/rounded_corner_editbox"
+                android:backgroundTint="@color/colorPrimaryDark"
+                android:gravity="center"
+                android:textAlignment="center"
+                android:textColor="@android:color/holo_blue_dark"
+                android:textSize="24sp" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/followersLabelTextView"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:text="Followers"
+                android:textAlignment="center"
+                android:textColor="@color/colorBorders"
+                android:textSize="14sp" />
 
             <TextView
                 android:id="@+id/followersCountTextView"
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:padding="5dp"
-                android:text="Followers: 0"
-                android:textAlignment="textStart"
-                android:textColor="@color/colorBorders"
-                android:textSize="16sp" />
-
-            <TextView
-                android:id="@+id/sugarcubesCountTextView"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:padding="5dp"
-                android:text="Sugar Cubes: 0"
+                android:layout_marginLeft="5dp"
+                android:layout_marginTop="5dp"
+                android:layout_marginRight="5dp"
+                android:layout_weight="3"
+                android:background="@drawable/rounded_corner_editbox"
+                android:backgroundTint="@color/colorPrimaryDark"
+                android:gravity="center"
                 android:textAlignment="center"
-                android:textColor="@color/colorBorders"
-                android:textSize="16sp" />
-
-            <TextView
-                android:id="@+id/followingCountTextView"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:padding="5dp"
-                android:text="Following: 0"
-                android:textAlignment="textEnd"
-                android:textColor="@color/colorBorders"
-                android:textSize="16sp" />
+                android:textColor="@android:color/holo_red_light"
+                android:textSize="24sp" />
         </LinearLayout>
     </LinearLayout>
+
+    <TextView
+        android:id="@+id/displayTitleTextView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="20dp"
+        android:layout_marginEnd="16dp"
+        android:fontFamily="monospace"
+        android:letterSpacing="0.1"
+        android:text="POSTS"
+        android:textColor="@color/colorBorders"
+        android:textSize="18sp"
+        android:textStyle="bold"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/linearLayout2" />
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/fragmentContainer"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_marginTop="24dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/displayTitleTextView">
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>
