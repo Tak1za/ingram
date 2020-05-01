@@ -72,7 +72,7 @@ public class EditProfileActivity extends AppCompatActivity {
         firebaseStorage = FirebaseStorage.getInstance();
 
         ActionBar actionBar = getSupportActionBar();
-        actionBar.setTitle(mAuth.getCurrentUser().getDisplayName());
+
 
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS, WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
         getWindow().setStatusBarColor(ContextCompat.getColor(this, android.R.color.black));
@@ -113,7 +113,7 @@ public class EditProfileActivity extends AppCompatActivity {
 
     private void downloadImageInMemory(String profileImageName) {
         StorageReference profileImageRef = firebaseStorage.getReference().child(mAuth.getCurrentUser().getUid()).child("images").child(profileImageName);
-        final long ONE_MEGABYTE = 1024 * 1024;
+        final long ONE_MEGABYTE = 1024 * 1024 * 10;
         profileImageRef.getBytes(ONE_MEGABYTE).addOnSuccessListener(new OnSuccessListener<byte[]>() {
             @Override
             public void onSuccess(byte[] bytes) {
@@ -124,28 +124,33 @@ public class EditProfileActivity extends AppCompatActivity {
     }
 
     public void updateProfile(View view){
-        profileImageView.setDrawingCacheEnabled(true);
-        profileImageView.buildDrawingCache();
-        Bitmap bitmap = ((BitmapDrawable) profileImageView.getDrawable()).getBitmap();
-        ByteArrayOutputStream baos = new ByteArrayOutputStream();
-        bitmap.compress(Bitmap.CompressFormat.JPEG, 100, baos);
-        byte[] data = baos.toByteArray();
-        final String imageName = UUID.randomUUID().toString() + ".jpg";
+        if(profileImageView.getDrawable() != null) {
+            profileImageView.setDrawingCacheEnabled(true);
+            profileImageView.buildDrawingCache();
+            Bitmap bitmap = ((BitmapDrawable) profileImageView.getDrawable()).getBitmap();
+            ByteArrayOutputStream baos = new ByteArrayOutputStream();
+            bitmap.compress(Bitmap.CompressFormat.JPEG, 100, baos);
+            byte[] data = baos.toByteArray();
+            final String imageName = UUID.randomUUID().toString() + ".jpg";
 
-        UploadTask uploadTask = firebaseStorage.getReference().child(mAuth.getCurrentUser().getUid()).child("images").child(imageName).putBytes(data);
-        uploadTask.addOnFailureListener(new OnFailureListener() {
-            @Override
-            public void onFailure(@NonNull Exception e) {
-                Log.d("DebugLogs", "Unable to upload");
-                Toast.makeText(EditProfileActivity.this, e.getMessage(), Toast.LENGTH_SHORT).show();
-            }
-        }).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
-            @Override
-            public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
-                Log.d("DebugLogs", "Upload successful");
-                updateProfileDetailsToDatabase(firstNameEditText.getText().toString(), lastNameEditText.getText().toString(), bioEditText.getText().toString(), imageName);
-            }
-        });
+            UploadTask uploadTask = firebaseStorage.getReference().child(mAuth.getCurrentUser().getUid()).child("images").child(imageName).putBytes(data);
+            uploadTask.addOnFailureListener(new OnFailureListener() {
+                @Override
+                public void onFailure(@NonNull Exception e) {
+                    Log.d("DebugLogs", "Unable to upload");
+                    Toast.makeText(EditProfileActivity.this, e.getMessage(), Toast.LENGTH_SHORT).show();
+                }
+            }).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+                @Override
+                public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
+                    Log.d("DebugLogs", "Upload successful");
+                    updateProfileDetailsToDatabase(firstNameEditText.getText().toString(), lastNameEditText.getText().toString(), bioEditText.getText().toString(), imageName);
+                }
+            });
+        } else {
+            String imageName = "";
+            updateProfileDetailsToDatabase(firstNameEditText.getText().toString(), lastNameEditText.getText().toString(), bioEditText.getText().toString(), imageName);
+        }
     }
 
     private void updateProfileDetailsToDatabase(String fName, String lName, String bio, String imageName) {
@@ -154,7 +159,9 @@ public class EditProfileActivity extends AppCompatActivity {
         updateUser.put("firstName", fName);
         updateUser.put("lastName", lName);
         updateUser.put("updatedAt", new Timestamp(new Date()));
-        updateUser.put("profileImageName", imageName);
+        if(!imageName.isEmpty()) {
+            updateUser.put("profileImageName", imageName);
+        }
         firestoreDb
                 .collection("users")
                 .document(mAuth.getCurrentUser().getUid())

@@ -56,6 +56,12 @@ public class LoginActivity extends AppCompatActivity {
         }
     }
 
+    @Override
+    public void onBackPressed() {
+        finishAffinity();
+        finish();
+    }
+
     public void goToSignup(View view) {
         Intent intent = new Intent(this, SignupActivity.class);
         startActivity(intent);

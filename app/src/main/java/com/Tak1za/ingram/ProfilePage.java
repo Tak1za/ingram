@@ -55,6 +55,7 @@ public class ProfilePage extends AppCompatActivity {
     TextView followingCountTextView;
     TextView bioTextView;
     ImageView profileImageView;
+    ActionBar actionBar;
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -68,7 +69,10 @@ public class ProfilePage extends AppCompatActivity {
         switch (item.getItemId()) {
             case R.id.logout:
                 mAuth.signOut();
+                Intent goToLoginIntent = new Intent(this, LoginActivity.class);
+                startActivity(goToLoginIntent);
                 finish();
+                return true;
             case R.id.addPost:
                 Intent intent = new Intent(this, AddPostActivity.class);
                 startActivity(intent);
@@ -78,8 +82,14 @@ public class ProfilePage extends AppCompatActivity {
                 startActivity(intentEditProfile);
                 return true;
             default:
-                return false;
+                return super.onOptionsItemSelected(item);
         }
+    }
+
+    @Override
+    public void onBackPressed() {
+        finishAffinity();
+        finish();
     }
 
     @SuppressLint("ResourceAsColor")
@@ -99,7 +109,7 @@ public class ProfilePage extends AppCompatActivity {
         bioTextView = findViewById(R.id.bioTextView);
         profileImageView = findViewById(R.id.profileImageView);
 
-        ActionBar actionBar = getSupportActionBar();
+        actionBar = getSupportActionBar();
         actionBar.setTitle(mAuth.getCurrentUser().getDisplayName());
 
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS, WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
@@ -126,6 +136,10 @@ public class ProfilePage extends AppCompatActivity {
                         getUserPosts(user);
                     } else {
                         Log.d("DebugLogs", "No such document");
+                        mAuth.signOut();
+                        Intent goToLoginIntent = new Intent(ProfilePage.this, LoginActivity.class);
+                        startActivity(goToLoginIntent);
+                        finish();
                         return;
                     }
                 } else {
@@ -154,15 +168,17 @@ public class ProfilePage extends AppCompatActivity {
                                 }
                             }
 
-                            StorageReference profileImageRef = firebaseStorage.getReference().child(mAuth.getCurrentUser().getUid()).child("images").child(user.getProfileImageName());
-                            final long ONE_MEGABYTE = 512 * 512;
-                            profileImageRef.getBytes(ONE_MEGABYTE).addOnSuccessListener(new OnSuccessListener<byte[]>() {
-                                @Override
-                                public void onSuccess(byte[] bytes) {
-                                    Bitmap bitmap = BitmapFactory.decodeByteArray(bytes, 0, bytes.length);
-                                    profileImageView.setImageBitmap(bitmap);
-                                }
-                            });
+                            if(user.getProfileImageName() != null && !user.getProfileImageName().isEmpty()) {
+                                StorageReference profileImageRef = firebaseStorage.getReference().child(mAuth.getCurrentUser().getUid()).child("images").child(user.getProfileImageName());
+                                final long ONE_MEGABYTE = 1024 * 1024 * 10;
+                                profileImageRef.getBytes(ONE_MEGABYTE).addOnSuccessListener(new OnSuccessListener<byte[]>() {
+                                    @Override
+                                    public void onSuccess(byte[] bytes) {
+                                        Bitmap bitmap = BitmapFactory.decodeByteArray(bytes, 0, bytes.length);
+                                        profileImageView.setImageBitmap(bitmap);
+                                    }
+                                });
+                            }
 
                             postsCountTextView.setText("Posts: " + userPosts.size());
                             pokesCountTextView.setText("Pokes: " + user.getPokes().size());
